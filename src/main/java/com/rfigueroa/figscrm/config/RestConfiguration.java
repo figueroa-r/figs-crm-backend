@@ -5,6 +5,8 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+import com.rfigueroa.figscrm.entity.Contact;
+import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.projections.ContactsList;
 import com.rfigueroa.figscrm.projections.TicketIncludeIds;
 
@@ -18,6 +20,10 @@ public class RestConfiguration implements RepositoryRestConfigurer {
             config.getProjectionConfiguration()
                         .addProjection(TicketIncludeIds.class)
                         .addProjection(ContactsList.class);
+
+
+            config.exposeIdsFor(Customer.class);
+            config.exposeIdsFor(Contact.class);
             
 
 

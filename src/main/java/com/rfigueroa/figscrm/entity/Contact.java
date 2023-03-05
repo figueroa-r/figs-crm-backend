@@ -55,7 +55,7 @@ public class Contact {
 
     @OneToMany(
         mappedBy = "contact",
-        fetch = FetchType.EAGER,
+        fetch = FetchType.LAZY,
         cascade = CascadeType.ALL)
     private List<ContactDetail> contactsList;
     

@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -49,12 +51,14 @@ public class Ticket {
     private Priority priority;
 
     @ManyToOne(
-        fetch = FetchType.LAZY,
-        cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+        optional = true,
+        cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH}
+        )
     @JoinColumn(name = "primary_contact_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Contact primaryContact;
 
-    @DateTimeFormat(pattern = "MM-dd-yyy")
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Column(name = "creation_date")
     private LocalDate creationDate;
 

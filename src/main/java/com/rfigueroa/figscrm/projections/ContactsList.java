@@ -10,7 +10,7 @@ public interface ContactsList {
     
     Integer getId();
     
-    @Value("#{target.getFirstName() + \" \" + target.getLastName}")
+    @Value("#{(target.getFirstName() + \" \" + target.getLastName).trim()}")
     String getFullName();
 
     Integer getAvatarId();

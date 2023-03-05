@@ -90,6 +90,8 @@ public class DatabaseInitializer {
             customer.setAvatarUrl(faker.company().logo());
             customer.setName(faker.company().name());
             customer.setCompanyType(faker.company().industry());
+            customer.setIsActive(faker.bool().bool());
+            customer.setIsVerified(faker.bool().bool());
             customer.setAddress1(faker.address().streetAddress());
             customer.setAddress2(faker.address().secondaryAddress());
             customer.setCity(faker.address().city());

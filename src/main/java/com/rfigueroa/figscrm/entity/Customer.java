@@ -39,6 +39,12 @@ public class Customer {
     @Column(name = "company_type")
     private String companyType;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @Column(name = "is_verified")
+    private Boolean isVerified;
+
     @Column(name = "address1")
     private String address1;
 
