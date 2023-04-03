@@ -40,7 +40,7 @@ public class RestConfiguration implements RepositoryRestConfigurer {
 
 
             cors.addMapping("/api/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000", "https://master.d2b1tg1ojgscyw.amplifyapp.com")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .maxAge(3600);
