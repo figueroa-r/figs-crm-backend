@@ -42,7 +42,7 @@ public class Contact {
     private String department;
 
     @Column(name = "active")
-    private boolean active;
+    private Boolean active;
 
     @Column(name = "avatar_id")
     private Integer avatarId;
@@ -70,6 +70,9 @@ public class Contact {
         contactsList.add(contactDetailToAdd);
         contactDetailToAdd.setContact(this);
     }
+
+    // method for checking empty boolean value in http request
+    
 
 
 }

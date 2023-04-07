@@ -10,6 +10,7 @@ import com.rfigueroa.figscrm.entity.Contact;
 import com.rfigueroa.figscrm.entity.ContactDetail;
 import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.entity.Priority;
+import com.rfigueroa.figscrm.entity.Ticket;
 import com.rfigueroa.figscrm.entity.TicketInteraction;
 import com.rfigueroa.figscrm.projections.ContactDetails;
 import com.rfigueroa.figscrm.projections.ContactsList;
@@ -30,12 +31,13 @@ public class RestConfiguration implements RepositoryRestConfigurer {
                         .addProjection(ContactDetails.class);
 
 
-            config.exposeIdsFor(Customer.class);
-            config.exposeIdsFor(Contact.class);
-            config.exposeIdsFor(Category.class);
-            config.exposeIdsFor(Priority.class);
-            config.exposeIdsFor(TicketInteraction.class);
-            config.exposeIdsFor(ContactDetail.class);
+            config.exposeIdsFor(Customer.class)
+                .exposeIdsFor(Contact.class)
+                .exposeIdsFor(Category.class)
+                .exposeIdsFor(Priority.class)
+                .exposeIdsFor(TicketInteraction.class)
+                .exposeIdsFor(ContactDetail.class)
+                .exposeIdsFor(Ticket.class);
             
 
 
