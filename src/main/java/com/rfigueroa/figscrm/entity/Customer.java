@@ -3,21 +3,16 @@ package com.rfigueroa.figscrm.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customer", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}, name = "CUSTOMER_NAME_UNIQUE"))
 @Data
 @NoArgsConstructor
 public class Customer {
@@ -30,6 +25,7 @@ public class Customer {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @NotBlank(message = "Name is required")
     @Column(name = "name")
     private String name;
 
@@ -39,32 +35,40 @@ public class Customer {
     @Column(name = "company_type")
     private String companyType;
 
+    @NotNull
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @NotNull
     @Column(name = "is_verified")
     private Boolean isVerified;
 
+    @NotBlank(message = "Address is required")
     @Column(name = "address1")
     private String address1;
 
     @Column(name = "address2")
     private String address2;
 
+    @NotBlank(message = "City is required")
     @Column(name = "city")
     private String city;
 
+    @NotBlank(message = "State is required")
     @Column(name = "state")
     private String state;
 
+    @NotBlank(message = "Zip is required")
     @Column(name = "zip")
     private String zip;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer",
                 cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY)
     private List<Contact> contacts;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer",
                 cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY)

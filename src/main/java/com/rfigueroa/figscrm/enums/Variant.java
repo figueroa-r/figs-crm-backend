@@ -17,4 +17,9 @@ public enum Variant {
         Variant[] variants = values();
         return variants[random.nextInt(variants.length)];
     }
+
+    // React/MUI requires variant to be in lowercase form when styling components
+    public String toString() { // may not be best practice, use custom variantLower() method instead?
+        return name().toLowerCase();
+    }
 }

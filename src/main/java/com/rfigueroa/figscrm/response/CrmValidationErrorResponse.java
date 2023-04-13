@@ -1,0 +1,46 @@
+package com.rfigueroa.figscrm.response;
+
+import java.util.Date;
+import java.util.List;
+
+public class CrmValidationErrorResponse {
+
+    private int status;
+    private List<String> message;
+    private Date timeStamp;
+
+    // no args constructor
+    public CrmValidationErrorResponse() {
+
+    }
+
+    public CrmValidationErrorResponse(int status, List<String> message, Date timeStamp) {
+        this.status = status;
+        this.message = message;
+        this.timeStamp = timeStamp;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<String> getMessage() {
+        return message;
+    }
+
+    public void setMessage(List<String> message) {
+        this.message = message;
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+}
