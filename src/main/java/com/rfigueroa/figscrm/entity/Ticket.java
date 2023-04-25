@@ -16,6 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -35,6 +39,7 @@ public class Ticket {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull
     @Column(name = "is_open")
     private Boolean isOpen;
 
@@ -52,6 +57,7 @@ public class Ticket {
 
     @ManyToOne(
         optional = true,
+        fetch = FetchType.LAZY,
         cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH}
         )
     @JoinColumn(name = "primary_contact_id")
@@ -60,10 +66,13 @@ public class Ticket {
 
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Column(name = "creation_date")
+    @PastOrPresent(message = "Creation date cannot be a future date")
     private LocalDate creationDate;
 
     // may change this to instead use a text column instead of varchar... depends on ticket notes size
     @Column(name = "ticket_notes", length = 500)
+    @Size(min = 10, message = "Please provide a description of 10 characters or more")
+    @NotBlank(message = "Ticket description cannot be blank")
     private String ticketNotes;
 
     @ManyToOne(

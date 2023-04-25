@@ -23,13 +23,16 @@ import com.rfigueroa.figscrm.entity.ContactDetail;
 @RequestMapping("api/v1/contactsBatch/")
 public class ContactBatchController {
 
-    @Autowired
     private ContactRepository contactRepository;
 
-    @Autowired
     private ContactDetailRepository contactDetailRepository;
 
-    
+    @Autowired
+    public ContactBatchController(ContactRepository contactRepository, ContactDetailRepository contactDetailRepository) {
+        this.contactRepository = contactRepository;
+        this.contactDetailRepository = contactDetailRepository;
+    }
+
     // batch save method...
     @Transactional
     @CrossOrigin(origins = {"http://localhost:3000", "https://master.d2b1tg1ojgscyw.amplifyapp.com"})
@@ -53,8 +56,8 @@ public class ContactBatchController {
             if(updatedContact.getDepartment() != null) {
                 persistedContact.setDepartment(updatedContact.getDepartment());
             }
-            if(updatedContact.getActive() != null) {
-                persistedContact.setActive(updatedContact.getActive());
+            if(updatedContact.getIsActive() != null) {
+                persistedContact.setIsActive(updatedContact.getIsActive());
             }
             if(updatedContact.getAvatarId() != null) {
                 persistedContact.setAvatarId(updatedContact.getAvatarId());

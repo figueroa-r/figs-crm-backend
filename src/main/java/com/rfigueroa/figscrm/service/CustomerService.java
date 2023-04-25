@@ -3,7 +3,7 @@ package com.rfigueroa.figscrm.service;
 import com.rfigueroa.figscrm.dao.CustomerRepository;
 import com.rfigueroa.figscrm.dto.CustomerPatchRequest;
 import com.rfigueroa.figscrm.dto.PageDTO;
-import com.rfigueroa.figscrm.dto.RestResponseDTO;
+import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
 import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository) {
@@ -29,7 +29,7 @@ public class CustomerService {
     }
 
     // return page of customers
-    public RestResponseDTO<Customer> getCustomersByPageRequest(int page, int size, String[] sortString) {
+    public RestPageResponseDTO<Customer> getCustomersByPageRequest(int page, int size, String[] sortString) {
 
         // set sorting parameters
         List<Sort.Order> orders = new ArrayList<>();
@@ -56,7 +56,7 @@ public class CustomerService {
                 customersPage.getTotalPages()
         );
 
-        return new RestResponseDTO<>(customersList, pageState);
+        return new RestPageResponseDTO<>(customersList, pageState);
     }
 
     // batch delete customers by id

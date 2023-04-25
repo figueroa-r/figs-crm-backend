@@ -10,7 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rfigueroa.figscrm.validators.ContactDetailsConstraint;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,16 +21,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "contact_detail")
 @Data
 @NoArgsConstructor
+@ContactDetailsConstraint
 public class ContactDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    
+
+    @NotBlank(message = "Contact method type cannot be blank")
     @Column(name = "contact_type")
     private String contactType;
 
+    @NotBlank(message = "Contact method details cannot be blank")
     @Column(name = "contact_details")
     private String contactDetail;
 

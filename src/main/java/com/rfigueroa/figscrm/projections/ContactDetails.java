@@ -20,10 +20,10 @@ public interface ContactDetails {
 
     String getDepartment();
 
-    boolean getActive();
+    Boolean getIsActive();
 
     Integer getAvatarId();
 
-    List<ContactDetail> getContactsList();
+    List<ContactDetailProjection> getContactsList();
     
 }

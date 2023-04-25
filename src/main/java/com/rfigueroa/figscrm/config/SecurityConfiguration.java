@@ -34,11 +34,18 @@ public class SecurityConfiguration {
                             .anyRequest().authenticated()
         );
 
-        // use HTTP basic authentication
+        // use HTTP basic authentication - uses cookies
         http.httpBasic();
 
         // disable Cross Site Request Forgery (CSRF)
         http.csrf().disable();
+
+//        http
+//                .authorizeRequests()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .httpBasic();
 
         return http.build();
     }

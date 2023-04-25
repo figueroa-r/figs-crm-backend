@@ -1,7 +1,7 @@
 package com.rfigueroa.figscrm.dto;
 
 
-public class RestResponseDTO<T> {
+public class RestPageResponseDTO<T> {
 
     private Iterable<T> data;
 
@@ -9,7 +9,7 @@ public class RestResponseDTO<T> {
 
     // constructor
 
-    public RestResponseDTO(Iterable<T> data, PageDTO page) {
+    public RestPageResponseDTO(Iterable<T> data, PageDTO page) {
         this.data = data;
         this.page = page;
     }

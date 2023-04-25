@@ -1,7 +1,7 @@
 package com.rfigueroa.figscrm.controller;
 
 import com.rfigueroa.figscrm.dto.CustomerPatchRequest;
-import com.rfigueroa.figscrm.dto.RestResponseDTO;
+import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
 import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v2")
+@RequestMapping("/api/v2/customers")
 public class CustomerController {
 
     CustomerService customerService; // service layer for customer repository
@@ -24,8 +24,8 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customers")
-    public ResponseEntity<RestResponseDTO<Customer>> getCustomersPage(
+    @GetMapping
+    public ResponseEntity<RestPageResponseDTO<Customer>> getCustomersPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name,asc") String[] sort ) {
@@ -34,29 +34,29 @@ public class CustomerController {
 
     }
 
-    @DeleteMapping("/customers")
+    @DeleteMapping
     public HttpStatus deleteCustomersList (@RequestBody List<Integer> customersList) {
         customerService.deleteAllCustomersById(customersList);
 
         return HttpStatus.OK;
     }
 
-    @GetMapping("/customers/{customerId}")
+    @GetMapping("/{customerId}")
     public Customer getSingleCustomer(@PathVariable Integer customerId) {
         return customerService.getCustomerById(customerId);
     }
 
-    @PostMapping("/customers")
+    @PostMapping
     public Customer createCustomer(@RequestBody Customer inputCustomer) {
         return customerService.createCustomer(inputCustomer);
     }
 
-    @PatchMapping("/customers/{customerId}")
+    @PatchMapping("/{customerId}")
     public Customer updateCustomerFields(@RequestBody CustomerPatchRequest updatedFields) {
         return customerService.updateCustomer(updatedFields);
     }
 
-    @DeleteMapping("/customers/{customerId}")
+    @DeleteMapping("/{customerId}")
     public HttpStatus deleteCustomer(@PathVariable Integer customerId) {
         customerService.deleteCustomerById(customerId);
 

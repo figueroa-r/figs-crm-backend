@@ -1,9 +1,9 @@
 package com.rfigueroa.figscrm.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.rfigueroa.figscrm.entity.Category;
 
-public interface CategoryRepository extends CrudRepository<Category, Integer> {
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
     
 }

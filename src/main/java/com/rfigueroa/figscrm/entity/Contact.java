@@ -14,9 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "contact")
@@ -29,12 +33,14 @@ public class Contact {
     @Column(name="id")
     private Integer id;
 
+    @NotBlank(message = "First Name is required")
     @Column(name = "first_name", length = 50)
     private String firstName;
 
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @NotBlank(message = "Title is required")
     @Column(name="title", length = 50)
     private String title;
 
@@ -42,11 +48,12 @@ public class Contact {
     private String department;
 
     @Column(name = "active")
-    private Boolean active;
+    private Boolean isActive;
 
+    @Range(min = 1, max = 24, message = "Value must be between {min} and {max}")
     @Column(name = "avatar_id")
     private Integer avatarId;
-    
+
     @ManyToOne(
         fetch = FetchType.LAZY,
         cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
@@ -70,10 +77,6 @@ public class Contact {
         contactsList.add(contactDetailToAdd);
         contactDetailToAdd.setContact(this);
     }
-
-    // method for checking empty boolean value in http request
-    
-
 
 }
 

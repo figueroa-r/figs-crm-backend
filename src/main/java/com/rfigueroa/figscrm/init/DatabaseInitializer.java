@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.javafaker.Faker;
@@ -33,6 +34,7 @@ public class DatabaseInitializer {
     private CustomerRepository customerRepository;
 
 
+    @Autowired
     public DatabaseInitializer(CustomerRepository theCustomerRepository) {
         customerRepository = theCustomerRepository;
     }
@@ -107,7 +109,7 @@ public class DatabaseInitializer {
                 contact.setLastName(faker.name().lastName());
                 contact.setTitle(faker.job().title());
                 contact.setDepartment(faker.job().field());
-                contact.setActive(faker.bool().bool());
+                contact.setIsActive(faker.bool().bool());
                 contact.setAvatarId(faker.number().numberBetween(1, 25));
 
                 ContactDetail phone = new ContactDetail();
