@@ -21,9 +21,6 @@ public class ContactDetailsValidator implements ConstraintValidator<ContactDetai
     @Override
     public boolean isValid(ContactDetail contactDetail, ConstraintValidatorContext constraintValidatorContext) {
 
-        System.out.println(contactDetail.getContactType());
-        System.out.println(contactDetail.getContactDetail());
-
         if(contactDetail.getContactType().equalsIgnoreCase("phone")) {
             // validate phone number
             String phoneRegex = "^[+]?[0-9]{0,3}[-\\s.]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$"; // matches phone pattern

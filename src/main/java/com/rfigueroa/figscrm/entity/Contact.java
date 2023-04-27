@@ -14,10 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
@@ -34,9 +32,13 @@ public class Contact {
     private Integer id;
 
     @NotBlank(message = "First Name is required")
+    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid first name")
+    @Size(max = 50, message = "Please enter a first name shorter than 50 characters")
     @Column(name = "first_name", length = 50)
     private String firstName;
 
+    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid last name")
+    @Size(max = 50, message = "Please enter a last name shorter than 50 characters")
     @Column(name = "last_name", length = 50)
     private String lastName;
 
@@ -47,6 +49,7 @@ public class Contact {
     @Column(name = "department", length = 50)
     private String department;
 
+    @NotNull(message = "Is Active field must be true or false")
     @Column(name = "active")
     private Boolean isActive;
 

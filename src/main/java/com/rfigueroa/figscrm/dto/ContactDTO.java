@@ -1,23 +1,33 @@
 package com.rfigueroa.figscrm.dto;
 
-import com.rfigueroa.figscrm.dto.ContactDetailDTO;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.*;
 import java.util.List;
 
 public class ContactDTO {
 
+    @NotBlank(message = "First Name is required")
+    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid first name")
+    @Size(max = 50, message = "Please enter a first name shorter than 50 characters")
     private String firstName;
 
+    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid last name")
+    @Size(max = 50, message = "Please enter a last name shorter than 50 characters")
     private String lastName;
 
+    @NotNull(message = "Is Active field must be true or false")
     private Boolean isActive;
 
+    @Range(min = 1, max = 24, message = "Value must be between {min} and {max}")
     private Integer avatarId;
 
+    @NotBlank(message = "Title is required")
     private String title;
 
     private String department;
 
+    @NotNull(message = "A Customer id must be provided")
     private Integer customerId;
 
     private List<ContactDetailDTO> contactMethods;

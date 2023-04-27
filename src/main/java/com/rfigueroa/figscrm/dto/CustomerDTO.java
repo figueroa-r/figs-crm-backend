@@ -1,21 +1,55 @@
 package com.rfigueroa.figscrm.dto;
 
-public class CustomerPatchRequest {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-    private Integer id;
+public class CustomerDTO {
+
+    private String avatarUrl;
+
+    @NotBlank(message = "Name is required")
+    @Size(min = 3, max = 50, message = "Customer name must be between 3 and 50 characters long")
     private String name;
     private String alias;
     private String companyType;
+
+    @NotNull(message = "isActive must have a true or false value")
     private Boolean isActive;
+
+    @NotNull(message = "isVerified must have a true or false value")
     private Boolean isVerified;
+
+    @NotBlank(message = "Address 1 is required")
+    @Size(min = 5, message = "Address must be at least 5 characters in length")
     private String address1;
     private String address2;
+
+    @NotBlank(message = "City is required")
     private String city;
+
+    @NotBlank(message = "State is required")
     private String state;
+
+    @NotBlank(message = "Zip is required")
+    @Pattern(
+            regexp = "^(?!0{5})(\\d{5})(?!-?0{4})(-?\\d{4})?$",
+            message = "Please enter a valid 5 or 9 digit zip code")
     private String zip;
 
-    public CustomerPatchRequest(Integer id, String name, String alias, String companyType, Boolean isActive, Boolean isVerified, String address1, String address2, String city, String state, String zip) {
-        this.id = id;
+    public CustomerDTO(String avatarUrl,
+                       String name,
+                       String alias,
+                       String companyType,
+                       Boolean isActive,
+                       Boolean isVerified,
+                       String address1,
+                       String address2,
+                       String city,
+                       String state,
+                       String zip) {
+        this.avatarUrl = avatarUrl;
         this.name = name;
         this.alias = alias;
         this.companyType = companyType;
@@ -28,12 +62,15 @@ public class CustomerPatchRequest {
         this.zip = zip;
     }
 
-    public Integer getId() {
-        return id;
+    public CustomerDTO() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getName() {
@@ -60,19 +97,19 @@ public class CustomerPatchRequest {
         this.companyType = companyType;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 
-    public Boolean getVerified() {
+    public Boolean getIsVerified() {
         return isVerified;
     }
 
-    public void setVerified(Boolean verified) {
+    public void setIsVerified(Boolean verified) {
         isVerified = verified;
     }
 

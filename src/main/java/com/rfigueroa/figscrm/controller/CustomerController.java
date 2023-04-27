@@ -1,8 +1,9 @@
 package com.rfigueroa.figscrm.controller;
 
-import com.rfigueroa.figscrm.dto.CustomerPatchRequest;
+import com.rfigueroa.figscrm.dto.CustomerDTO;
 import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
-import com.rfigueroa.figscrm.entity.Customer;
+import com.rfigueroa.figscrm.projections.CustomerDetails;
+import com.rfigueroa.figscrm.projections.CustomerTableProjection;
 import com.rfigueroa.figscrm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -25,7 +27,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<RestPageResponseDTO<Customer>> getCustomersPage(
+    public ResponseEntity<RestPageResponseDTO<CustomerTableProjection>> getCustomersPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name,asc") String[] sort ) {
@@ -42,18 +44,18 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public Customer getSingleCustomer(@PathVariable Integer customerId) {
-        return customerService.getCustomerById(customerId);
+    public ResponseEntity<CustomerDetails> getSingleCustomer(@PathVariable Integer customerId) {
+        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer inputCustomer) {
-        return customerService.createCustomer(inputCustomer);
+    public ResponseEntity<CustomerDetails> createCustomer(@Valid @RequestBody CustomerDTO inputCustomer) {
+        return new ResponseEntity<>(customerService.createCustomer(inputCustomer), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{customerId}")
-    public Customer updateCustomerFields(@RequestBody CustomerPatchRequest updatedFields) {
-        return customerService.updateCustomer(updatedFields);
+    public ResponseEntity<CustomerDetails> updateCustomerFields(@RequestBody CustomerDTO updatedFields, @PathVariable Integer customerId) {
+        return new ResponseEntity<>(customerService.updateCustomer(updatedFields, customerId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{customerId}")

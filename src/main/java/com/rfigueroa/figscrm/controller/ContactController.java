@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "https://master.d2b1tg1ojgscyw.amplifyapp.com"})
 @RequestMapping("/api/v2/contacts")
@@ -33,7 +35,7 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<ContactDetails> createNewContact(@RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<ContactDetails> createNewContact(@Valid @RequestBody ContactDTO contactDTO) {
         return new ResponseEntity<>(contactService.createNewContact(contactDTO), HttpStatus.CREATED);
     }
 

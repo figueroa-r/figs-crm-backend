@@ -1,16 +1,19 @@
 package com.rfigueroa.figscrm.service;
 
 import com.rfigueroa.figscrm.dao.CustomerRepository;
-import com.rfigueroa.figscrm.dto.CustomerPatchRequest;
+import com.rfigueroa.figscrm.dto.CustomerDTO;
 import com.rfigueroa.figscrm.dto.PageDTO;
 import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
 import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.exception.EntityNotFoundException;
+import com.rfigueroa.figscrm.projections.CustomerDetails;
+import com.rfigueroa.figscrm.projections.CustomerTableProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,13 +26,16 @@ public class CustomerService {
 
     private CustomerRepository customerRepository;
 
+    private ProjectionFactory projectionFactory;
+
     @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, ProjectionFactory projectionFactory) {
         this.customerRepository = customerRepository;
+        this.projectionFactory = projectionFactory;
     }
 
     // return page of customers
-    public RestPageResponseDTO<Customer> getCustomersByPageRequest(int page, int size, String[] sortString) {
+    public RestPageResponseDTO<CustomerTableProjection> getCustomersByPageRequest(int page, int size, String[] sortString) {
 
         // set sorting parameters
         List<Sort.Order> orders = new ArrayList<>();
@@ -38,9 +44,9 @@ public class CustomerService {
         // create pageable input for repository
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
-        Page<Customer> customersPage = customerRepository.findAll(pagingSort);
+        Page<CustomerTableProjection> customersPage = customerRepository.findAllProjectedBy(pagingSort);
         // List for storing customers
-        List<Customer> customersList;
+        List<CustomerTableProjection> customersList;
         customersList = customersPage.getContent();
 
         if(customersList.isEmpty() && page != 0) {
@@ -65,9 +71,9 @@ public class CustomerService {
     }
 
     // return single customer
-    public Customer getCustomerById(Integer customerId) {
+    public CustomerDetails getCustomerById(Integer customerId) {
 
-        Optional<Customer> customer = customerRepository.findById(customerId);
+        Optional<CustomerDetails> customer = customerRepository.findCustomerById(customerId);
 
         if (customer.isEmpty()) {
             // no customer in repository with id = customerId
@@ -78,12 +84,28 @@ public class CustomerService {
     }
 
     // create a single customer
-    public Customer createCustomer(Customer inputCustomer) {
+    public CustomerDetails createCustomer(CustomerDTO inputCustomer) {
 
-        // ensure that we are not overwriting an existing customer
-        inputCustomer.setId(-1);
+        // create a new customer and map values
+        Customer customerToSave = new Customer();
 
-        return customerRepository.save(inputCustomer);
+        // map values to Customer object
+        customerToSave.setAvatarUrl(inputCustomer.getAvatarUrl());
+        customerToSave.setName(inputCustomer.getName());
+        customerToSave.setAlias(inputCustomer.getAlias());
+        customerToSave.setCompanyType(inputCustomer.getCompanyType());
+        customerToSave.setIsActive(inputCustomer.getIsActive());
+        customerToSave.setIsVerified(inputCustomer.getIsVerified());
+        customerToSave.setAddress1(inputCustomer.getAddress1());
+        customerToSave.setAddress2(inputCustomer.getAddress2());
+        customerToSave.setCity(inputCustomer.getCity());
+        customerToSave.setState(inputCustomer.getState());
+        customerToSave.setZip(inputCustomer.getZip());
+
+        Customer persistedCustomer = customerRepository.save(customerToSave);
+
+
+        return projectionFactory.createProjection(CustomerDetails.class, persistedCustomer);
     }
 
     // delete a single customer
@@ -93,25 +115,29 @@ public class CustomerService {
 
     // update the fields on a customer
     @Transactional
-    public Customer updateCustomer(CustomerPatchRequest updatedFields) {
-        Optional<Customer> customerOptional = customerRepository.findById(updatedFields.getId());
+    public CustomerDetails updateCustomer(CustomerDTO updatedFields, Integer customerId) {
+
+        // retrieve customer from repository
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
         if (customerOptional.isEmpty()) throw
-                new EntityNotFoundException("Customer does not exist with id of " + updatedFields.getId());
+                new EntityNotFoundException("Customer does not exist with id of " + customerId);
 
         Customer persistedCustomer = customerOptional.get();
         // update any fields that have been provided...
         if (updatedFields.getName() != null) persistedCustomer.setName(updatedFields.getName());
         if (updatedFields.getAlias() != null) persistedCustomer.setAlias(updatedFields.getAlias());
         if (updatedFields.getCompanyType() != null) persistedCustomer.setCompanyType(updatedFields.getCompanyType());
-        if (updatedFields.getActive() != null) persistedCustomer.setIsActive(updatedFields.getActive());
-        if (updatedFields.getVerified() != null) persistedCustomer.setIsVerified(updatedFields.getVerified());
+        if (updatedFields.getIsActive() != null) persistedCustomer.setIsActive(updatedFields.getIsActive());
+        if (updatedFields.getIsVerified() != null) persistedCustomer.setIsVerified(updatedFields.getIsVerified());
         if (updatedFields.getAddress1() != null) persistedCustomer.setAddress1(updatedFields.getAddress1());
         if (updatedFields.getAddress2() != null) persistedCustomer.setAddress2(updatedFields.getAddress2());
         if (updatedFields.getCity() != null) persistedCustomer.setCity(updatedFields.getCity());
         if (updatedFields.getState() != null) persistedCustomer.setState(updatedFields.getState());
         if (updatedFields.getZip() != null) persistedCustomer.setZip(updatedFields.getZip());
 
-        return customerRepository.save(persistedCustomer);
+        Customer updatedCustomer = customerRepository.save(persistedCustomer);
+
+        return projectionFactory.createProjection(CustomerDetails.class, updatedCustomer);
     }
 }

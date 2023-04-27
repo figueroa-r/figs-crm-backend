@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,16 +63,17 @@ public class Customer {
     private String state;
 
     @NotBlank(message = "Zip is required")
+    @Pattern(
+            regexp = "^(?!0{5})(\\d{5})(?!-?0{4})(-?\\d{4})?$",
+            message = "Please enter a valid 5 or 9 digit zip code")
     @Column(name = "zip")
     private String zip;
 
-    @JsonIgnore // TODO create customer DTO / projection to use instead of customer object
     @OneToMany(mappedBy = "customer",
                 cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY)
     private List<Contact> contacts;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "customer",
                 cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY)
