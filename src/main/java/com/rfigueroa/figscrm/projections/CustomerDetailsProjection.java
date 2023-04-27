@@ -1,6 +1,6 @@
 package com.rfigueroa.figscrm.projections;
 
-public interface CustomerDetails {
+public interface CustomerDetailsProjection {
 
     Integer getId();
 

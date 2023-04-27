@@ -2,7 +2,7 @@ package com.rfigueroa.figscrm.controller;
 
 import com.rfigueroa.figscrm.dto.CustomerDTO;
 import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
-import com.rfigueroa.figscrm.projections.CustomerDetails;
+import com.rfigueroa.figscrm.projections.CustomerDetailsProjection;
 import com.rfigueroa.figscrm.projections.CustomerTableProjection;
 import com.rfigueroa.figscrm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000", "https://master.d2b1tg1ojgscyw.amplifyapp.com"})
 @RequestMapping("/api/v2/customers")
 public class CustomerController {
 
@@ -44,17 +45,17 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDetails> getSingleCustomer(@PathVariable Integer customerId) {
+    public ResponseEntity<CustomerDetailsProjection> getSingleCustomer(@PathVariable Integer customerId) {
         return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDetails> createCustomer(@Valid @RequestBody CustomerDTO inputCustomer) {
+    public ResponseEntity<CustomerDetailsProjection> createCustomer(@Valid @RequestBody CustomerDTO inputCustomer) {
         return new ResponseEntity<>(customerService.createCustomer(inputCustomer), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{customerId}")
-    public ResponseEntity<CustomerDetails> updateCustomerFields(@RequestBody CustomerDTO updatedFields, @PathVariable Integer customerId) {
+    public ResponseEntity<CustomerDetailsProjection> updateCustomerFields(@RequestBody CustomerDTO updatedFields, @PathVariable Integer customerId) {
         return new ResponseEntity<>(customerService.updateCustomer(updatedFields, customerId), HttpStatus.OK);
     }
 

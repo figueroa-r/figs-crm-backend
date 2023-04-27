@@ -1,40 +1,20 @@
-package com.rfigueroa.figscrm.entity;
+package com.rfigueroa.figscrm.dto;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Table(
-        name = "contact_me_form",
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"email_address", "phone_number"},
-                name = "EMAIL_PHONE_UNIQUE"))
-@Data
-@NoArgsConstructor
-public class ContactMeForm {
-    
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer Id;
+public class ContactMeFormDTO {
 
     @Pattern(
             regexp = "^[a-zA-Z'-]+\\s[a-zA-Z'-]+$",
             message = "Please enter a valid first and last name")
     @NotBlank(message = "Full Name cannot be blank")
-    @Column(name = "full_name")
     private String fullName;
 
     @Email(message = "Please enter a valid email")
     @NotBlank(message = "Email cannot be blank")
-    @Column(name = "email_address")
     private String email;
 
     @Pattern(
@@ -42,7 +22,6 @@ public class ContactMeForm {
             message = "Please enter a valid phone number"
     )
     @NotBlank(message = "Phone number cannot be blank")
-    @Column(name = "phone_number")
     private String phone;
 
     @NotBlank(message = "Contact note cannot be blank")
@@ -50,8 +29,47 @@ public class ContactMeForm {
             min = 10,
             max = 255,
             message = "please enter a number between {min} and {max}")
-    @Column(name = "contact_note")
     private String contactNote;
 
-    
+    public ContactMeFormDTO(String fullName, String email, String phone, String contactNote) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.contactNote = contactNote;
+    }
+
+    public ContactMeFormDTO() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getContactNote() {
+        return contactNote;
+    }
+
+    public void setContactNote(String contactNote) {
+        this.contactNote = contactNote;
+    }
 }

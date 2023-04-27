@@ -1,6 +1,6 @@
 package com.rfigueroa.figscrm.dao;
 
-import com.rfigueroa.figscrm.projections.CustomerDetails;
+import com.rfigueroa.figscrm.projections.CustomerDetailsProjection;
 import com.rfigueroa.figscrm.projections.CustomerTableProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +16,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     Page<CustomerTableProjection> findAllProjectedBy(Pageable pageable);
 
     // Customer Details projection
-    Optional<CustomerDetails> findCustomerById(Integer id);
+    Optional<CustomerDetailsProjection> findCustomerById(Integer id);
     
 }

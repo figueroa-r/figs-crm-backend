@@ -6,7 +6,7 @@ import com.rfigueroa.figscrm.dto.PageDTO;
 import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
 import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.exception.EntityNotFoundException;
-import com.rfigueroa.figscrm.projections.CustomerDetails;
+import com.rfigueroa.figscrm.projections.CustomerDetailsProjection;
 import com.rfigueroa.figscrm.projections.CustomerTableProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -71,9 +71,9 @@ public class CustomerService {
     }
 
     // return single customer
-    public CustomerDetails getCustomerById(Integer customerId) {
+    public CustomerDetailsProjection getCustomerById(Integer customerId) {
 
-        Optional<CustomerDetails> customer = customerRepository.findCustomerById(customerId);
+        Optional<CustomerDetailsProjection> customer = customerRepository.findCustomerById(customerId);
 
         if (customer.isEmpty()) {
             // no customer in repository with id = customerId
@@ -84,7 +84,7 @@ public class CustomerService {
     }
 
     // create a single customer
-    public CustomerDetails createCustomer(CustomerDTO inputCustomer) {
+    public CustomerDetailsProjection createCustomer(CustomerDTO inputCustomer) {
 
         // create a new customer and map values
         Customer customerToSave = new Customer();
@@ -105,7 +105,7 @@ public class CustomerService {
         Customer persistedCustomer = customerRepository.save(customerToSave);
 
 
-        return projectionFactory.createProjection(CustomerDetails.class, persistedCustomer);
+        return projectionFactory.createProjection(CustomerDetailsProjection.class, persistedCustomer);
     }
 
     // delete a single customer
@@ -115,7 +115,7 @@ public class CustomerService {
 
     // update the fields on a customer
     @Transactional
-    public CustomerDetails updateCustomer(CustomerDTO updatedFields, Integer customerId) {
+    public CustomerDetailsProjection updateCustomer(CustomerDTO updatedFields, Integer customerId) {
 
         // retrieve customer from repository
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
@@ -138,6 +138,6 @@ public class CustomerService {
 
         Customer updatedCustomer = customerRepository.save(persistedCustomer);
 
-        return projectionFactory.createProjection(CustomerDetails.class, updatedCustomer);
+        return projectionFactory.createProjection(CustomerDetailsProjection.class, updatedCustomer);
     }
 }

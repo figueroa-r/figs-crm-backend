@@ -11,15 +11,15 @@ import com.rfigueroa.figscrm.entity.Contact;
 import com.rfigueroa.figscrm.entity.ContactDetail;
 import com.rfigueroa.figscrm.entity.Customer;
 import com.rfigueroa.figscrm.exception.EntityNotFoundException;
-import com.rfigueroa.figscrm.projections.ContactDetails;
+import com.rfigueroa.figscrm.projections.ContactDetailProjection;
 import com.rfigueroa.figscrm.projections.ContactTableProjection;
+import com.rfigueroa.figscrm.projections.ContactsDropdownProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.projection.ProjectionFactory;
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -86,13 +86,13 @@ public class ContactService {
 
     // get single contact as well as contact details
     @Transactional
-    public ContactDetails getContactWithDetails(Integer contactId) {
-        Optional<ContactDetails> contactOptional = contactRepository.findContactById(contactId);
+    public ContactDetailProjection getContactWithDetails(Integer contactId) {
+        Optional<ContactDetailProjection> contactOptional = contactRepository.findContactById(contactId);
 
         if(contactOptional.isEmpty()) throw new EntityNotFoundException("Could not find contact with id of " + contactId);
 
         // get the contact as well as the associated entity
-        ContactDetails contact = contactOptional.get();
+        ContactDetailProjection contact = contactOptional.get();
         contact.getContactsList();
 
         return contact;
@@ -100,7 +100,7 @@ public class ContactService {
 
     // save a contact
     @Transactional
-    public ContactDetails createNewContact(ContactDTO newContact) {
+    public ContactDetailProjection createNewContact(ContactDTO newContact) {
 
         // get reference to customer by the provided id and add bidirectional relationship
         Customer customerReference = customerRepository.getReferenceById(newContact.getCustomerId());
@@ -134,11 +134,11 @@ public class ContactService {
 
         Contact createdContact = contactRepository.save(persistContact);
 
-        return projectionFactory.createProjection(ContactDetails.class, createdContact);
+        return projectionFactory.createProjection(ContactDetailProjection.class, createdContact);
     }
 
     @Transactional
-    public ContactDetails updateExistingContact(ContactDTO contactDTO, Integer existingContactId) {
+    public ContactDetailProjection updateExistingContact(ContactDTO contactDTO, Integer existingContactId) {
 
         // get reference to existing entity...
         Contact existingContact = contactRepository.getReferenceById(existingContactId);
@@ -178,7 +178,7 @@ public class ContactService {
         // save entity
         Contact updatedContact = contactRepository.save(existingContact);
 
-        return projectionFactory.createProjection(ContactDetails.class, updatedContact);
+        return projectionFactory.createProjection(ContactDetailProjection.class, updatedContact);
     }
 
     public void deleteContactById(Integer id) {
@@ -187,5 +187,9 @@ public class ContactService {
 
     public void deleteContactDetailById(Integer id) {
         contactDetailRepository.deleteById(id);
+    }
+
+    public List<ContactsDropdownProjection> getContactsMapListByCustomerId(Integer customerId) {
+        return contactRepository.findAllDropdownByCustomerId(customerId);
     }
 }

@@ -2,8 +2,9 @@ package com.rfigueroa.figscrm.controller;
 
 import com.rfigueroa.figscrm.dto.ContactDTO;
 import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
-import com.rfigueroa.figscrm.projections.ContactDetails;
+import com.rfigueroa.figscrm.projections.ContactDetailProjection;
 import com.rfigueroa.figscrm.projections.ContactTableProjection;
+import com.rfigueroa.figscrm.projections.ContactsDropdownProjection;
 import com.rfigueroa.figscrm.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "https://master.d2b1tg1ojgscyw.amplifyapp.com"})
@@ -35,18 +37,18 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<ContactDetails> createNewContact(@Valid @RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<ContactDetailProjection> createNewContact(@Valid @RequestBody ContactDTO contactDTO) {
         return new ResponseEntity<>(contactService.createNewContact(contactDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{contactId}")
-    public ResponseEntity<ContactDetails> getSingleContact(@PathVariable Integer contactId) {
+    public ResponseEntity<ContactDetailProjection> getSingleContact(@PathVariable Integer contactId) {
         return new ResponseEntity<>(contactService.getContactWithDetails(contactId), HttpStatus.OK);
     }
 
 
     @PatchMapping("/{contactId}")
-    public ResponseEntity<ContactDetails> updateExistingContact(@RequestBody ContactDTO contactDTO, @PathVariable Integer contactId) {
+    public ResponseEntity<ContactDetailProjection> updateExistingContact(@RequestBody ContactDTO contactDTO, @PathVariable Integer contactId) {
 
         return new ResponseEntity<>(contactService.updateExistingContact(contactDTO, contactId), HttpStatus.OK);
     }
@@ -63,5 +65,14 @@ public class ContactController {
 
         contactService.deleteContactDetailById(contactMethodId);
         return HttpStatus.OK;
+    }
+
+    @GetMapping("/list/{customerId}")
+    public ResponseEntity<List<ContactsDropdownProjection>> getContactsList(@PathVariable Integer customerId) {
+
+        return new ResponseEntity<>(
+                contactService.getContactsMapListByCustomerId(customerId),
+                HttpStatus.OK
+        );
     }
 }

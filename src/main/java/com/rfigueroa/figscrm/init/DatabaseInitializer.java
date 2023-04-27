@@ -106,9 +106,7 @@ public class DatabaseInitializer {
                 Contact contact = new Contact();
 
                 contact.setFirstName(faker.name().firstName());
-                System.out.println(contact.getFirstName());
                 contact.setLastName(faker.name().lastName());
-                System.out.println(contact.getLastName());
                 contact.setTitle(faker.job().title());
                 contact.setDepartment(faker.job().field());
                 contact.setIsActive(faker.bool().bool());
