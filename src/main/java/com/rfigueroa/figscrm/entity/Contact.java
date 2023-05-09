@@ -32,20 +32,24 @@ public class Contact {
     private Integer id;
 
     @NotBlank(message = "First Name is required")
-    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid first name")
-    @Size(max = 50, message = "Please enter a first name shorter than 50 characters")
-    @Column(name = "first_name", length = 50)
+    @Pattern(regexp = "^[A-Z][a-z]*([-' ]?[A-Z][a-z]*)*$", message = "Please enter a valid first name")
+    @Size(max = 20, message = "Please enter a first name shorter than 20 characters")
+    @Column(name = "first_name", length = 20)
     private String firstName;
 
-    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid last name")
-    @Size(max = 50, message = "Please enter a last name shorter than 50 characters")
+    @Pattern(regexp = "^[A-Z][a-z]*([-' ]?[A-Z][a-z]*)*$", message = "Please enter a valid last name")
+    @Size(max = 20, message = "Please enter a last name shorter than 20 characters")
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @Pattern(regexp = "^[A-Z][a-z]*([-' ]?[A-Z][a-z]*)*$", message = "Please enter a valid job title")
+    @Size(max = 50, message = "Please enter a job title shorter than 50 characters")
     @NotBlank(message = "Title is required")
     @Column(name="title", length = 50)
     private String title;
 
+    @Pattern(regexp = "^[A-Z][a-z]*([-' .]?[A-Z][a-z]*)*$", message = "Please enter a valid department")
+    @Size(max = 50, message = "Please enter a department shorter than 50 characters")
     @Column(name = "department", length = 50)
     private String department;
 

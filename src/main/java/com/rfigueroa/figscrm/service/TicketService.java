@@ -1,10 +1,7 @@
 package com.rfigueroa.figscrm.service;
 
 import com.rfigueroa.figscrm.dao.*;
-import com.rfigueroa.figscrm.dto.InteractionDTO;
-import com.rfigueroa.figscrm.dto.PageDTO;
-import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
-import com.rfigueroa.figscrm.dto.TicketDTO;
+import com.rfigueroa.figscrm.dto.*;
 import com.rfigueroa.figscrm.entity.*;
 import com.rfigueroa.figscrm.exception.EntityNotFoundException;
 import com.rfigueroa.figscrm.projections.InteractionProjection;
@@ -49,6 +46,15 @@ public class TicketService {
         this.priorityRepository = priorityRepository;
         this.contactRepository = contactRepository;
         this.projectionFactory = projectionFactory;
+    }
+
+    public TicketContextDTO getTicketContext(Integer customerId) {
+
+        return new TicketContextDTO(
+                contactRepository.findAllDropdownByCustomerId(customerId),
+                priorityRepository.findAll(),
+                categoryRepository.findAll()
+        );
     }
 
 

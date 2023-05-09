@@ -23,7 +23,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -64,14 +63,14 @@ public class Ticket {
     @NotFound(action = NotFoundAction.IGNORE)
     private Contact primaryContact;
 
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
+//    @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Column(name = "creation_date")
     @PastOrPresent(message = "Creation date cannot be a future date")
     private LocalDate creationDate;
 
     // may change this to instead use a text column instead of varchar... depends on ticket notes size
     @Column(name = "ticket_notes", length = 500)
-    @Size(min = 10, message = "Please provide a description of 10 characters or more")
+    @Size(min = 10, max = 500, message = "Please provide a description between {min} and {max} characters")
     @NotBlank(message = "Ticket description cannot be blank")
     private String ticketNotes;
 

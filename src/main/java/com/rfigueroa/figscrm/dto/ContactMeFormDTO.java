@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 public class ContactMeFormDTO {
 
     @Pattern(
-            regexp = "^[a-zA-Z'-]+\\s[a-zA-Z'-]+$",
+            regexp = "^[A-Z][a-z]+(?: [A-Z][a-z]*[.]?)+$",
             message = "Please enter a valid first and last name")
     @NotBlank(message = "Full Name cannot be blank")
     private String fullName;

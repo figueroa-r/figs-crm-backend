@@ -8,12 +8,12 @@ import java.util.List;
 public class ContactDTO {
 
     @NotBlank(message = "First Name is required")
-    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid first name")
-    @Size(max = 50, message = "Please enter a first name shorter than 50 characters")
+    @Pattern(regexp = "^[A-Z][a-z]*([-' ]?[A-Z][a-z]*)*$", message = "Please enter a valid first name")
+    @Size(max = 20, message = "Please enter a first name shorter than 20 characters")
     private String firstName;
 
-    @Pattern(regexp = "^[a-zA-z'-]+$", message = "Please enter a valid last name")
-    @Size(max = 50, message = "Please enter a last name shorter than 50 characters")
+    @Pattern(regexp = "^[A-Z][a-z]*([-' ]?[A-Z][a-z]*)*$", message = "Please enter a valid last name")
+    @Size(max = 20, message = "Please enter a last name shorter than 20 characters")
     private String lastName;
 
     @NotNull(message = "Is Active field must be true or false")
@@ -22,21 +22,25 @@ public class ContactDTO {
     @Range(min = 1, max = 24, message = "Value must be between {min} and {max}")
     private Integer avatarId;
 
+    @Pattern(regexp = "^[A-Z][a-z]*([-' ]?[A-Z][a-z]*)*$", message = "Please enter a valid job title")
+    @Size(max = 50, message = "Please enter a job title shorter than 50 characters")
     @NotBlank(message = "Title is required")
     private String title;
 
+    @Pattern(regexp = "^$|^[A-Z][a-z]*([-' .]?[A-Z][a-z]*)*$", message = "Please enter a valid department")
+    @Size(max = 50, message = "Please enter a department shorter than 50 characters")
     private String department;
 
     @NotNull(message = "A Customer id must be provided")
     private Integer customerId;
 
-    private List<ContactDetailDTO> contactMethods;
+    private List<ContactDetailDTO> contactsList;
 
     // constructors
     public ContactDTO() {
     }
 
-    public ContactDTO(String firstName, String lastName, Boolean isActive, Integer avatarId, String title, String department, Integer customerId, List<ContactDetailDTO> contactMethods) {
+    public ContactDTO(String firstName, String lastName, Boolean isActive, Integer avatarId, String title, String department, Integer customerId, List<ContactDetailDTO> contactsList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
@@ -44,7 +48,7 @@ public class ContactDTO {
         this.title = title;
         this.department = department;
         this.customerId = customerId;
-        this.contactMethods = contactMethods;
+        this.contactsList = contactsList;
     }
 
     // getters and setters
@@ -105,11 +109,11 @@ public class ContactDTO {
         this.customerId = customerId;
     }
 
-    public List<ContactDetailDTO> getContactMethods() {
-        return contactMethods;
+    public List<ContactDetailDTO> getContactsList() {
+        return contactsList;
     }
 
-    public void setContactMethods(List<ContactDetailDTO> contactMethods) {
-        this.contactMethods = contactMethods;
+    public void setContactsList(List<ContactDetailDTO> contactsList) {
+        this.contactsList = contactsList;
     }
 }

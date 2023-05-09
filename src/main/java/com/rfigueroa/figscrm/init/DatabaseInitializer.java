@@ -153,7 +153,7 @@ public class DatabaseInitializer {
                     interaction.setInteractionDate(faker.date()
                                                         .between(past, now));
                     
-                    interaction.setInteractionDetails(faker.lorem().sentence());
+                    interaction.setInteractionDetails(faker.lorem().sentence(10));
 
                     ticket.addInteraction(interaction);
                 }

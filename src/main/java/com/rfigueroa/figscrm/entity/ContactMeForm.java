@@ -26,7 +26,7 @@ public class ContactMeForm {
     private Integer Id;
 
     @Pattern(
-            regexp = "^[a-zA-Z'-]+\\s[a-zA-Z'-]+$",
+            regexp = "^[A-Z][a-z]+(?: [A-Z][a-z]*[.]?)+$",
             message = "Please enter a valid first and last name")
     @NotBlank(message = "Full Name cannot be blank")
     @Column(name = "full_name")

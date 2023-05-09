@@ -2,6 +2,7 @@ package com.rfigueroa.figscrm.controller;
 
 import com.rfigueroa.figscrm.dto.InteractionDTO;
 import com.rfigueroa.figscrm.dto.RestPageResponseDTO;
+import com.rfigueroa.figscrm.dto.TicketContextDTO;
 import com.rfigueroa.figscrm.dto.TicketDTO;
 import com.rfigueroa.figscrm.projections.InteractionProjection;
 import com.rfigueroa.figscrm.projections.TicketDetailProjection;
@@ -23,6 +24,12 @@ public class TicketController {
 
     @Autowired
     public TicketController(TicketService ticketService) { this.ticketService = ticketService; }
+
+    @GetMapping("/context")
+    public ResponseEntity<TicketContextDTO> getTicketContext(@RequestParam(required = true) Integer customerId) {
+
+        return new ResponseEntity<TicketContextDTO>(ticketService.getTicketContext(customerId), HttpStatus.OK);
+    }
 
     // get pageable list of tickets
     @GetMapping

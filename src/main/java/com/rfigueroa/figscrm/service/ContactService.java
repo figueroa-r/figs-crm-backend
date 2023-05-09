@@ -119,7 +119,7 @@ public class ContactService {
         customerReference.addContact(persistContact);
         
         // create new contact methods for each 
-        for (ContactDetailDTO contactDetail : newContact.getContactMethods() ) {
+        for (ContactDetailDTO contactDetail : newContact.getContactsList() ) {
 
             // create entity
             ContactDetail newContactDetail = new ContactDetail();
@@ -151,12 +151,12 @@ public class ContactService {
         if(contactDTO.getAvatarId() != null) existingContact.setAvatarId(contactDTO.getAvatarId());
         if(contactDTO.getIsActive() != null) existingContact.setIsActive(contactDTO.getIsActive());
 
-        if(contactDTO.getContactMethods() != null) {
+        if(contactDTO.getContactsList() != null) {
             // create a new ArrayList to save the modified/ created detail entities
             List<ContactDetail> updatedList = new ArrayList<>();
 
             // loop through list of contact methods and update fields or create new contactDetail
-            for (ContactDetailDTO contactMethod: contactDTO.getContactMethods()) {
+            for (ContactDetailDTO contactMethod: contactDTO.getContactsList()) {
 
                 ContactDetail newContactDetail = new ContactDetail();
 
@@ -178,7 +178,7 @@ public class ContactService {
         // save entity
         Contact updatedContact = contactRepository.save(existingContact);
 
-        return projectionFactory.createProjection(ContactDetailProjection.class, updatedContact);
+        return getContactWithDetails(updatedContact.getId());
     }
 
     public void deleteContactById(Integer id) {

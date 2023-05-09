@@ -29,6 +29,10 @@ public class Customer {
 
     @NotBlank(message = "Name is required")
     @Size(min = 3, max = 50, message = "Customer name must be between 3 and 50 characters long")
+    @Pattern(
+            regexp = "([a-zA-Z0-9]|[- @,.#&!'])*",
+            message = "Name must be alphanumeric characters and the following special characters: '- , . # & !'"
+    )
     @Column(name = "name")
     private String name;
 
